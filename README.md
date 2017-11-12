@@ -1,23 +1,47 @@
-<p align="center">
-    <img src="https://cloud.githubusercontent.com/assets/1342803/24797159/52fb0d88-1b90-11e7-85a5-359fff0496a4.png" width="320" alt="MySQL">
-    <br>
-    <br>
-    <a href="http://beta.docs.vapor.codes/getting-started/hello-world/">
-        <img src="http://img.shields.io/badge/read_the-docs-92A8D1.svg" alt="Documentation">
-    </a>
-    <a href="http://vapor.team">
-        <img src="http://vapor.team/badge.svg" alt="Slack Team">
-    </a>
-    <a href="LICENSE">
-        <img src="http://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT License">
-    </a>
-    <a href="https://circleci.com/gh/vapor/mysql">
-        <img src="https://circleci.com/gh/vapor/mysql.svg?style=shield" alt="Continuous Integration">
-    </a>
-    <a href="https://travis-ci.org/vapor/api-template">
-    	<img src="https://travis-ci.org/vapor/api-template.svg?branch=master" alt="Build Status">
-    </a>
-    <a href="https://swift.org">
-        <img src="http://img.shields.io/badge/swift-3.1-brightgreen.svg" alt="Swift 3.1">
-    </a>
-</center>
+[![iOS 4 Beginners](https://user-images.githubusercontent.com/1230922/31862042-c045dba0-b737-11e7-98bf-e816ad04ad73.png)](https://github.com/DaftMobile/ios4beginners_2017)
+
+![License: MIT](http://img.shields.io/badge/license-MIT-brightgreen.svg)
+![Platform: Vapor](http://img.shields.io/badge/platform-Vapor-brightgreen.svg)
+![Swift: 3.1](http://img.shields.io/badge/swift-3.1-brightgreen.svg)
+
+# Switter API
+
+**URL = https://switter.int.daftcode.pl/**
+
+## Authorization
+
+- Basic - `x-device-uuid` header
+
+#### Authorization errors
+
+- Basic - **Error Code 400** - You will receive it when:
+  - `x-device-uuid` header is missing
+
+## API
+
+### Hello
+
+- `GET /api/hello`
+
+_Required authentication: None_
+
+Example valid response:
+**200**
+```
+Hello world!
+```
+
+### Joke
+
+- `GET /api/hello`
+
+_Required authentication: Basic_
+
+Example valid response:
+**200**
+```json
+{
+  "content": "This is a joke"
+}
+```
+
