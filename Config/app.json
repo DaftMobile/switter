@@ -1,3 +1,4 @@
 {
-	"foo": "foo-bar"
+	"name": "Switter",
+	"url": "http://0.0.0.0:8085"
 }

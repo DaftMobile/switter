@@ -1,26 +1,26 @@
-// swift-tools-version:4.0
+// swift-tools-version:3.1
 
 import PackageDescription
 
 let package = Package(
     name: "Switter",
-    products: [
-        .library(name: "App", targets: ["App"]),
-        .executable(name: "Run", targets: ["Run"])
-    ],
-    dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", .upToNextMajor(from: "2.1.0")),
-        .package(url: "https://github.com/vapor/fluent-provider.git", .upToNextMajor(from: "1.2.0")),
-    ],
     targets: [
-        .target(name: "App", dependencies: ["Vapor", "FluentProvider"],
-                exclude: [
-                    "Config",
-                    "Public",
-                    "Resources",
-                ]),
-        .target(name: "Run", dependencies: ["App"]),
-        .testTarget(name: "AppTests", dependencies: ["App", "Testing"])
+        Target(name: "Models"),
+        Target(name: "Logic", dependencies: ["Models"]),
+        Target(name: "Run", dependencies: ["Models", "Logic"])
+        ],
+    dependencies: [
+        .Package(url: "https://github.com/vapor/vapor.git", majorVersion: 2),
+        .Package(url: "https://github.com/vapor/fluent-provider.git", majorVersion: 1),
+        .Package(url: "https://github.com/vapor-community/swiftybeaver-provider.git", majorVersion: 1),
+        .Package(url: "https://github.com/vapor/mysql-provider.git", majorVersion: 2),
+        ],
+    exclude: [
+        "Config",
+        "Database",
+        "Localization",
+        "Public",
+        "Resources",
+        "Flockfile.swift"
     ]
 )
-

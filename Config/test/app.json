@@ -1,0 +1,6 @@
+{
+	"supported_versions": {
+		"ios": [121],
+		"android": [122]
+	}
+}
