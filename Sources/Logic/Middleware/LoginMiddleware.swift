@@ -10,7 +10,6 @@ final class LoginMiddleware: Middleware {
 			device.userId = try user.assertExists()
 			try device.save()
 		}
-		guard let user = try request.user() else { throw Abort.serverError }
 		return try next.respond(to: request)
 	}
 }
