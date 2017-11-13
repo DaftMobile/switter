@@ -33,7 +33,7 @@ Hello world!
 
 ### Joke
 
-- `GET /api/hello`
+- `GET /api/joke`
 
 _Required authentication: Basic_
 
