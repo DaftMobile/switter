@@ -24,9 +24,7 @@ public final class Seeds: Command, ConfigInitializable {
 	}
 
 	public func run(arguments: [String]) throws {
-
 		console.info("Started the seeder");
-
 		let loader = DataFile()
 
 		// MAKR: -- Jokes

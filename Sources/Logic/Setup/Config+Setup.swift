@@ -6,12 +6,9 @@ import SwiftyBeaverProvider
 extension Config {
     public func setup() throws {
         Node.fuzzy = [Row.self, JSON.self, Node.self]
-
         try setupProviders()
 		try setupCommands()
-        try setupPreparations()
-    }
-    
+	}
 
     private func setupProviders() throws {
         try addProvider(FluentProvider.Provider.self)
@@ -23,7 +20,4 @@ extension Config {
 	private func setupCommands() throws {
 		addConfigurable(command: Seeds.init, name: "switter:seed")
 	}
-
-    private func setupPreparations() throws {
-    }
 }

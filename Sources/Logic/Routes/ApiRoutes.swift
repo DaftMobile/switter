@@ -21,10 +21,14 @@ final class ApiRoutes: RouteCollection {
 	}
 
 	// MARK: - Protected controllers
-	private let jokeController = JokeController()
+	private let jokeController: JokeController
 
 	// MARK: - Open controllers
 	private let helloController = HelloController()
+
+	init(config: Config) throws {
+		jokeController = try JokeController(config: config)
+	}
 
 	func build(_ builder: RouteBuilder) throws {
 		protectedBuild(builder)
