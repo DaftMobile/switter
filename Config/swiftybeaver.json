@@ -1,3 +1,5 @@
-{
-  "console": true
-}
+[
+  {
+    "type": "console"
+  }
+]
