@@ -4,7 +4,8 @@ public extension TaskSource {
     static let linkSecrets = TaskSource(tasks: [
         LinkSharedFilesTask(),
         LinkSecretsTask(),
-        LinkJsonsTask()
+        LinkJsonsTask(),
+        LinkImagesTask()
     ])
 }
 
@@ -21,6 +22,10 @@ extension Paths {
 
     public static var jsonsDirectory: String {
         return "\(sharedDirectory)/Jsons"
+    }
+
+    public static var imagesDirectory: String {
+        return "\(sharedDirectory)/Images"
     }
 }
 
@@ -56,3 +61,16 @@ class LinkJsonsTask: Task {
         try server.execute("ln -sfn \(Paths.jsonsDirectory) \(destinationDirectory)")
     }
 }
+
+class LinkImagesTask: Task {
+
+    let name = "images"
+    let namespace = linkShared
+
+    func run(on server: Server) throws {
+        let destinationDirectory = "\(Paths.nextDirectory)/Resources"
+        try server.execute("mkdir -p \(Paths.nextDirectory)/Resources")
+        try server.execute("ln -sfn \(Paths.imagesDirectory) \(destinationDirectory)")
+    }
+}
+
