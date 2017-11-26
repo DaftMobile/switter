@@ -10,6 +10,7 @@ public final class Provider: Vapor.Provider {
 		config.preparations.append(User.self)
 		config.preparations.append(Device.self)
 		config.preparations.append(Joke.self)
+		config.preparations.append(Pokemon.self)
 	}
 
 	public func boot(_ droplet: Droplet) throws { }

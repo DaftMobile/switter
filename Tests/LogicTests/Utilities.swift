@@ -1,5 +1,6 @@
 import Foundation
-@testable import App
+@testable import Models
+@testable import Logic
 @testable import Vapor
 import XCTest
 import Testing

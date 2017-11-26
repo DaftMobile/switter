@@ -22,12 +22,14 @@ final class ApiRoutes: RouteCollection {
 
 	// MARK: - Protected controllers
 	private let jokeController: JokeController
+	private let pokemonController: PokemonController
 
 	// MARK: - Open controllers
 	private let helloController = HelloController()
 
 	init(config: Config) throws {
 		jokeController = try JokeController(config: config)
+		pokemonController = try PokemonController(config: config)
 	}
 
 	func build(_ builder: RouteBuilder) throws {
@@ -40,6 +42,8 @@ final class ApiRoutes: RouteCollection {
 
 		//Register routes here
 		protectedRoute.get("joke", handler: jokeController.joke)
+		protectedRoute.get("pokemon", handler: pokemonController.list)
+		protectedRoute.get("pokemon", Pokemon.parameter, handler: pokemonController.info)
 	}
 
 	private func openBuild(_ builder: RouteBuilder) {
