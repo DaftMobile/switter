@@ -19,4 +19,3 @@ final class PokemonController {
 		return try request.parameters.next(Pokemon.self).makeJSON()
 	}
 }
-
