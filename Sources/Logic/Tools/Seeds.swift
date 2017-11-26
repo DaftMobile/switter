@@ -39,7 +39,7 @@ public final class Seeds: Command, ConfigInitializable {
 
 		// MARK: -- POKEMON
 		console.info("SEEDING POKEMON")
-		let pokemon = try loader.read(at: resourcesDir + "Jsons/pokemon_list.json")
+		let pokemon = try loader.read(at: resourcesDir + "Jsons/seeds/pokemon_list.json")
 		let pokemonJson = try JSON(bytes: pokemon)
 		for pokemon in pokemonJson.array! {
 			let name: String = try pokemon.get("name")
