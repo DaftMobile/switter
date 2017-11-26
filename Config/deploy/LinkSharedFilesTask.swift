@@ -36,6 +36,7 @@ class LinkSharedFilesTask: Task {
     func run(on server: Server) throws {
         try invoke("link_shared:secrets", on: server)
         try invoke("link_shared:jsons", on: server)
+        try invoke("link_shared:images", on: server)
     }
 }
 
