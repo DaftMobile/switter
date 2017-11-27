@@ -84,6 +84,8 @@ Example valid response (`/api/pokemon/1`):
 }
 ```
 
+Pokemon not found: **404**
+
 ### Pokemon GET by Name
 
 - `GET /api/pokemon/:name`
@@ -100,14 +102,17 @@ Example valid response (`/api/pokemon/bulbasaur`):
 }
 ```
 
+Pokemon not found: **404**
+
 ### Pokemon Thumbnail
 
 - `GET /api/pokemon/:number/thumbnail`
 
 _Required authentication: Basic_
 
-Returns a thumbnail png image representing the requested Pokemon (size `124x114 px`)
+Returns a thumbnail png image representing the requested Pokemon (size `124x114 px`) **200**
 
+Pokemon not found: **404**
 
 ### Pokemon Image
 
@@ -115,5 +120,6 @@ Returns a thumbnail png image representing the requested Pokemon (size `124x114 
 
 _Required authentication: Basic_
 
-Returns a full png image representing the requested Pokemon
+Returns a full png image representing the requested Pokemon **200**
 
+Pokemon not found: **404**
