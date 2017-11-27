@@ -45,3 +45,75 @@ Example valid response:
 }
 ```
 
+### Pokemon Index
+
+- `GET /api/pokemon`
+
+_Required authentication: Basic_
+
+Example valid response:
+**200**
+```json
+[
+  {
+    "color": 8570017,
+    "name": "Bulbasaur",
+    "number": 1
+  },
+  {
+    "color": 8961217,
+    "name": "Ivysaur",
+    "number": 2
+  }
+]
+```
+
+### Pokemon GET by Number
+
+- `GET /api/pokemon/:number`
+
+_Required authentication: Basic_
+
+Example valid response (`/api/pokemon/1`):
+**200**
+```json
+{
+  "name": "Bulbasaur",
+  "number": 1,
+  "color": 8570017
+}
+```
+
+### Pokemon GET by Name
+
+- `GET /api/pokemon/:name`
+
+_Required authentication: Basic_
+
+Example valid response (`/api/pokemon/bulbasaur`):
+**200**
+```json
+{
+  "name": "Bulbasaur",
+  "number": 1,
+  "color": 8570017
+}
+```
+
+### Pokemon Thumbnail
+
+- `GET /api/pokemon/:number/thumbnail`
+
+_Required authentication: Basic_
+
+Returns a thumbnail png image representing the requested Pokemon (size `124x114 px`)
+
+
+### Pokemon Image
+
+- `GET /api/pokemon/:number/image`
+
+_Required authentication: Basic_
+
+Returns a full png image representing the requested Pokemon
+
