@@ -11,7 +11,8 @@ public final class Pokemon: Model {
 	public var name: String
 	public var number: Int
 	public var colorNumber: Int
-	fileprivate let undiscoveredColor: Int = 7237230
+	public static let undiscoveredColor: Int = 7237230
+	public static let undiscoveredName: String = "Unknown"
 
 	public struct Keys {
 		public static let id = "id"
@@ -59,14 +60,21 @@ extension Pokemon: Preparation {
 
 extension Pokemon {
 	public func makeJSON(for user: User) throws -> JSON {
+		let name = try user.owns(self) ? self.name : Pokemon.undiscoveredName
+		let color = try user.owns(self) ? self.colorNumber : Pokemon.undiscoveredColor
 		var json = JSON()
-		try json.set(Pokemon.Keys.name, "Unknown")
-		try json.set(Pokemon.Keys.colorNumber, undiscoveredColor)
 		try json.set(Pokemon.Keys.number, number)
+		try json.set(Pokemon.Keys.name, name)
+		try json.set(Pokemon.Keys.colorNumber, color)
 		return json
 	}
 }
 
+extension Pokemon {
+	var trainers: Siblings<Pokemon, User, Catch> {
+		return siblings()
+	}
+}
 
 extension Pokemon: Parameterizable {
 	public static func make(for parameter: String) throws -> Pokemon {

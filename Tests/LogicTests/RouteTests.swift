@@ -14,6 +14,9 @@ class RouteTests: TestCase {
 
 	override func tearDown() {
 		super.tearDown()
+		for c in try! Catch.all() { try! c.delete() }
+		for d in try! Device.all() { try! d.delete() }
+		for u in try! User.all() { try! u.delete() }
 		for p in try! Pokemon.all() { try! p.delete() }
 		for j in try! Joke.all() { try! j.delete() }
 	}
@@ -50,13 +53,40 @@ class RouteTests: TestCase {
 		XCTAssertEqual(try Joke.all().first?.toldCount, 1)
 	}
 
+	func testApiAddsDeviceAndUserToTheDatabase() throws {
+		try createSampleJoke()
+		try drop
+			.testResponse(to: .get, at: "api/joke", headers: validHeaders)
+		XCTAssertEqual(try Device.count(), 1)
+		XCTAssertEqual(try User.count(), 1)
+		XCTAssertNotNil(try User.all().first?.device.all().first)
+	}
+
+	private func createSampleDevice() throws -> Device {
+		try drop.testResponse(to: .get, at: "api/joke", headers: validHeaders)
+		return try Device.all().first!
+	}
+
+	private func createSampleUser() throws -> User {
+		return try createSampleDevice().user().get()!
+	}
+
 	private func seedSamplePokemon() throws {
 		try Pokemon(name: "Bulbasaur", number: 1, color: 8570017).save()
 		try Pokemon(name: "Charmander", number: 4, color: 15313528).save()
 	}
 
 	private func discoverBothPokemon() throws {
+		let user = try createSampleUser()
+		for pokemon in try Pokemon.all() {
+			try user.markCatch(pokemon: pokemon)
+		}
+	}
 
+	private func discoverBulbasaur() throws {
+		let user = try createSampleUser()
+		guard let bulbasaur = try Pokemon.makeQuery().filter("name", "Bulbasaur").first() else { throw Abort.serverError }
+		try user.markCatch(pokemon: bulbasaur)
 	}
 
 	private func seedAndDiscover() throws {
@@ -73,6 +103,23 @@ class RouteTests: TestCase {
 				return json.array?.count == 2
 					&& json.array?.first?["name"]?.string == "Bulbasaur"
 					&& json.array?.first?["number"]?.int == 1
+			})
+	}
+
+	func testPokemonAllGetWhenOnlyBulbasaurIsCaught() throws {
+		try seedSamplePokemon()
+		try discoverBulbasaur()
+		try drop
+			.testResponse(to: .get, at: "api/pokemon", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("", passes: { json -> Bool in
+				return json.array?.count == 2
+					&& json.array?.first?["name"]?.string == "Bulbasaur"
+					&& json.array?.first?["color"]?.int == 8570017
+					&& json.array?.first?["number"]?.int == 1
+					&& json.array?.last?["name"]?.string == Pokemon.undiscoveredName
+					&& json.array?.last?["color"]?.int == Pokemon.undiscoveredColor
+					&& json.array?.last?["number"]?.int == 4
 			})
 	}
 

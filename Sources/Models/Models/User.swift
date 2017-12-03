@@ -30,8 +30,22 @@ public final class User: Model {
 extension User: SoftDeletable { }
 
 extension User {
-	public func devices() -> Children<User, Device> {
+	public var device: Children<User, Device> {
 		return children()
+	}
+}
+
+extension User {
+	public var pokemon: Siblings<User, Pokemon, Catch> {
+		return siblings()
+	}
+
+	public func owns(_ pokemon: Pokemon) throws -> Bool {
+		return try self.pokemon.isAttached(pokemon)
+	}
+
+	public func markCatch(pokemon: Pokemon) throws {
+		try self.pokemon.add(pokemon)
 	}
 }
 
