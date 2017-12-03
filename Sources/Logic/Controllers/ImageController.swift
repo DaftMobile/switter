@@ -38,17 +38,20 @@ final class ImageController: ConfigInitializable {
 	}
 
 
-	private func response(pokemon: Pokemon, thumbnail: Bool) throws -> ResponseRepresentable {
-		let photoData = try image(for: pokemon, thumbnail: thumbnail, grey: true)
+	private func response(user: User, pokemon: Pokemon, thumbnail: Bool) throws -> ResponseRepresentable {
+		let grey = try !user.owns(pokemon)
+		let photoData = try image(for: pokemon, thumbnail: thumbnail, grey: grey)
 		let headers = [HeaderKey.contentType: "image/png"]
 		return Response(status: .ok, headers: headers, body: .data(photoData))
 	}
 
 	func image(request: Request) throws -> ResponseRepresentable {
-		return try response(pokemon: try request.parameters.next(Pokemon.self), thumbnail: false)
+		guard let user = try request.user() else { throw Abort.unauthorized }
+		return try response(user: user, pokemon: try request.parameters.next(Pokemon.self), thumbnail: false)
 	}
 
 	func thumbnail(request: Request) throws -> ResponseRepresentable {
-		return try response(pokemon: try request.parameters.next(Pokemon.self), thumbnail: true)
+		guard let user = try request.user() else { throw Abort.unauthorized }
+		return try response(user: user, pokemon: try request.parameters.next(Pokemon.self), thumbnail: true)
 	}
 }

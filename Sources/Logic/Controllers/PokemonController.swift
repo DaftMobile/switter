@@ -22,4 +22,11 @@ final class PokemonController {
 		guard let user = try request.user() else { throw Abort.unauthorized }
 		return try request.parameters.next(Pokemon.self).makeJSON(for: user)
 	}
+
+	func catchPokemon(request: Request) throws -> ResponseRepresentable {
+		guard let user = try request.user() else { throw Abort.unauthorized }
+		let pokemon = try request.parameters.next(Pokemon.self)
+		if try user.owns(pokemon) == false { try user.markCatch(pokemon: pokemon) }
+		return try pokemon.makeJSON(for: user)
+	}
 }

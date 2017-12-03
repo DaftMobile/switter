@@ -32,6 +32,10 @@ class RouteTests: TestCase {
 		return ["x-device-uuid": "123-123"]
 	}
 
+	var differentHeaders: [HeaderKey: String] {
+		return ["x-device-uuid": "123-1234"]
+	}
+
     func testNoJokesgives500() throws {
         try drop
 			.testResponse(to: .get, at: "api/joke", headers: validHeaders)
@@ -89,6 +93,11 @@ class RouteTests: TestCase {
 		try user.markCatch(pokemon: bulbasaur)
 	}
 
+	private func image(from: Droplet, index: Int, thumb: Bool, discovered: Bool) throws -> Bytes {
+		let path = drop.config.resourcesDir.appending("Images/Pokemons/\(discovered ? "Color" : "Grey")/\(thumb ? "Small" : "Big")/\(index)\(thumb ? "_small": "").png")
+		return try DataFile().read(at: path)
+	}
+
 	private func seedAndDiscover() throws {
 		try seedSamplePokemon()
 		try discoverBothPokemon()
@@ -131,6 +140,71 @@ class RouteTests: TestCase {
 			.assertJSON("name", equals: "Charmander")
 			.assertJSON("number", equals: 4)
 			.assertJSON("color", equals: 15313528)
+	}
+
+	func testSinglePokemonValidRouteWithoutDiscovery() throws {
+		try seedSamplePokemon()
+		try drop
+			.testResponse(to: .get, at: "api/pokemon/4", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: Pokemon.undiscoveredName)
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: Pokemon.undiscoveredColor)
+		try drop
+			.testResponse(to: .post, at: "api/pokemon/4/catch", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: "Charmander")
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: 15313528)
+		try drop
+			.testResponse(to: .get, at: "api/pokemon/4", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: "Charmander")
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: 15313528)
+
+		try drop
+			.testResponse(to: .get, at: "api/pokemon/4", headers: differentHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: Pokemon.undiscoveredName)
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: Pokemon.undiscoveredColor)
+	}
+
+	func testThumbnailWithDiscovery() throws {
+		try seedAndDiscover()
+		let body = try drop
+			.testResponse(to: .get, at: "api/pokemon/4/thumbnail", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.testBody()
+		XCTAssertEqual(body, try image(from: drop, index: 4, thumb: true, discovered: true))
+	}
+
+	func testThumbnailWithoutDiscovery() throws {
+		try seedSamplePokemon()
+		let body = try drop
+			.testResponse(to: .get, at: "api/pokemon/4/thumbnail", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.testBody()
+		XCTAssertEqual(body, try image(from: drop, index: 4, thumb: true, discovered: false))
+	}
+
+	func testFullImageWithDiscovery() throws {
+		try seedAndDiscover()
+		let body = try drop
+			.testResponse(to: .get, at: "api/pokemon/4/image", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.testBody()
+		XCTAssertEqual(body, try image(from: drop, index: 4, thumb: false, discovered: true))
+	}
+
+	func testFullImageWithoutDiscovery() throws {
+		try seedSamplePokemon()
+		let body = try drop
+			.testResponse(to: .get, at: "api/pokemon/4/image", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.testBody()
+		XCTAssertEqual(body, try image(from: drop, index: 4, thumb: false, discovered: false))
 	}
 
 	func testSinglePokemonInvalidRoute() throws {

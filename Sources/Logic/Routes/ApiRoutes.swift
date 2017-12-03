@@ -46,6 +46,7 @@ final class ApiRoutes: RouteCollection {
 		protectedRoute.get("joke", handler: jokeController.joke)
 		protectedRoute.get("pokemon", handler: pokemonController.list)
 		protectedRoute.get("pokemon", Pokemon.parameter, handler: pokemonController.info)
+		protectedRoute.post("pokemon", Pokemon.parameter, "catch", handler: pokemonController.catchPokemon)
 		protectedRoute.get("pokemon", Pokemon.parameter, "image", handler: imageController.image)
 		protectedRoute.get("pokemon", Pokemon.parameter, "thumbnail", handler: imageController.thumbnail)
 	}
