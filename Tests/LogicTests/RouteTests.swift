@@ -55,8 +55,17 @@ class RouteTests: TestCase {
 		try Pokemon(name: "Charmander", number: 4, color: 15313528).save()
 	}
 
-	func testPokemonAllGet() throws {
+	private func discoverBothPokemon() throws {
+
+	}
+
+	private func seedAndDiscover() throws {
 		try seedSamplePokemon()
+		try discoverBothPokemon()
+	}
+
+	func testPokemonAllGet() throws {
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon", headers: validHeaders)
 			.assertStatus(is: .ok)
@@ -68,7 +77,7 @@ class RouteTests: TestCase {
 	}
 
 	func testSinglePokemonValidRoute() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/4", headers: validHeaders)
 			.assertStatus(is: .ok)
@@ -78,14 +87,14 @@ class RouteTests: TestCase {
 	}
 
 	func testSinglePokemonInvalidRoute() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/5", headers: validHeaders)
 			.assertStatus(is: .notFound)
 	}
 
 	func testSinglePokemonValidRouteByName() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/Charmander", headers: validHeaders)
 			.assertStatus(is: .ok)
@@ -95,7 +104,7 @@ class RouteTests: TestCase {
 	}
 
 	func testSinglePokemonValidRouteByNameLowercased() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/charmander", headers: validHeaders)
 			.assertStatus(is: .ok)
@@ -105,17 +114,31 @@ class RouteTests: TestCase {
 	}
 
 	func testSinglePokemonInvalidRouteByName() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/charmandera", headers: validHeaders)
 			.assertStatus(is: .notFound)
 	}
 
 	func testSinglePokemonInvalidRouteByNameIncomplete() throws {
-		try seedSamplePokemon()
+		try seedAndDiscover()
 		try drop
 			.testResponse(to: .get, at: "api/pokemon/charm", headers: validHeaders)
 			.assertStatus(is: .notFound)
+	}
+
+	func testAllPokemonEndpointWhenPokemonAreNotDiscoveredByThisDevice() throws {
+		try seedSamplePokemon()
+		try drop
+			.testResponse(to: .get, at: "api/pokemon", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("", passes: { json -> Bool in
+				return json.array?.count == 2
+					&& json.array?.first?["name"]?.string == "Unknown"
+					&& json.array?.first?["number"]?.int == 1
+					&& json.array?.last?["name"]?.string == "Unknown"
+					&& json.array?.last?["number"]?.int == 4
+			})
 	}
 }
 

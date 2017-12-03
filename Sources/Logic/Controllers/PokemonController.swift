@@ -11,11 +11,15 @@ final class PokemonController {
 	}
 
 	func list(request: Request) throws -> ResponseRepresentable {
+		guard let user = try request.user() else { throw Abort.unauthorized }
 		let allPokemon = try Pokemon.all().sorted { $0.0.number < $0.1.number }
-		return try allPokemon.makeJSON()
+		return try allPokemon.map {
+			try $0.makeJSON(for: user)
+		}.makeJSON()
 	}
 
 	func info(request: Request) throws -> ResponseRepresentable {
-		return try request.parameters.next(Pokemon.self).makeJSON()
+		guard let user = try request.user() else { throw Abort.unauthorized }
+		return try request.parameters.next(Pokemon.self).makeJSON(for: user)
 	}
 }

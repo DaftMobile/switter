@@ -11,6 +11,7 @@ public final class Pokemon: Model {
 	public var name: String
 	public var number: Int
 	public var colorNumber: Int
+	fileprivate let undiscoveredColor: Int = 7237230
 
 	public struct Keys {
 		public static let id = "id"
@@ -56,17 +57,16 @@ extension Pokemon: Preparation {
 	}
 }
 
-extension Pokemon: JSONRepresentable {
-	public func makeJSON() throws -> JSON {
+extension Pokemon {
+	public func makeJSON(for user: User) throws -> JSON {
 		var json = JSON()
-		try json.set(Pokemon.Keys.name, name)
-		try json.set(Pokemon.Keys.colorNumber, colorNumber)
+		try json.set(Pokemon.Keys.name, "Unknown")
+		try json.set(Pokemon.Keys.colorNumber, undiscoveredColor)
 		try json.set(Pokemon.Keys.number, number)
 		return json
 	}
 }
 
-extension Pokemon: ResponseRepresentable { }
 
 extension Pokemon: Parameterizable {
 	public static func make(for parameter: String) throws -> Pokemon {
