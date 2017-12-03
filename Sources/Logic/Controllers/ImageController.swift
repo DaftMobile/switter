@@ -18,10 +18,10 @@ final class ImageController: ConfigInitializable {
 	}
 
 	private func imagePath(for pokemon: Pokemon, thumbnail: Bool, grey: Bool) -> String {
-		let folder = thumbnail ? "Small" : "Big"
-		let folder2 = grey ? "Grey" : "Color"
+		let folder = grey ? "Grey" : "Color"
+		let folder2 = thumbnail ? "Small" : "Big"
 		let fileSuffix = thumbnail ? "_small" : ""
-		return resourcesDir + "Images/Pokemons/\(folder2)/\(folder)/\(pokemon.number)\(fileSuffix).png"
+		return resourcesDir + "Images/Pokemons/\(folder)/\(folder2)/\(pokemon.number)\(fileSuffix).png"
 	}
 
 	private func image(for pokemon: Pokemon, thumbnail: Bool, grey: Bool) throws -> Bytes {
@@ -36,7 +36,6 @@ final class ImageController: ConfigInitializable {
 		let photo = try loader.read(at: path)
 		images[id(for: pokemon, thumbnail: thumbnail, grey: grey)] = photo
 	}
-
 
 	private func response(user: User, pokemon: Pokemon, thumbnail: Bool) throws -> ResponseRepresentable {
 		let grey = try !user.owns(pokemon)
