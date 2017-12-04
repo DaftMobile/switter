@@ -2,7 +2,7 @@
 
 ![License: MIT](http://img.shields.io/badge/license-MIT-brightgreen.svg)
 ![Platform: Vapor](http://img.shields.io/badge/platform-Vapor-brightgreen.svg)
-![Swift: 3.1](http://img.shields.io/badge/swift-3.1-brightgreen.svg)
+![Swift: 4.0](http://img.shields.io/badge/swift-4.0-brightgreen.svg)
 
 # Switter API
 
@@ -62,7 +62,7 @@ Example valid response:
   },
   {
     "color": 8961217,
-    "name": "Ivysaur",
+    "name": "Unknown",
     "number": 2
   }
 ]
@@ -123,3 +123,19 @@ _Required authentication: Basic_
 Returns a full png image representing the requested Pokemon **200**
 
 Pokemon not found: **404**
+
+### Catch a Pokemon
+
+- `POST /api/pokemon/:number/catch`
+
+_Required authentication: Basic_
+
+Example valid response (`/api/pokemon/1/catch`):
+**200**
+```json
+{
+  "name": "Bulbasaur",
+  "number": 1,
+  "color": 8570017
+}
+```
