@@ -1,6 +1,6 @@
 import Flock
 
-Flock.configure(base: Base(), environments: [Staging()])
+Flock.configure(base: Base(), environments: [Staging(), Staging2()])
 
 Flock.use(.deploy)
 Flock.use(.linkSecrets)

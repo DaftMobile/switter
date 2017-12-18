@@ -7,6 +7,6 @@ class Staging: Environment {
 
 		Config.deployDirectory = "/home/deploy"
 		Config.repoBranch = "master"
-		Flock.serve(address: Server.Address(ip: "91.185.189.8", port: 2200), user: "deploy", roles: [.app, .db, .web], authMethod: Keychain.mdab121)
+		Flock.serve(address: Server.Address(user: "deploy", ip: "91.185.189.8", port: 2200), user: "deploy", roles: [.app, .db, .web], authMethod: Keychain.mdab121)
 	}
 }
