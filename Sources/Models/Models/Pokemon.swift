@@ -62,6 +62,14 @@ extension Pokemon {
 	public func makeJSON(for user: User) throws -> JSON {
 		let name = try user.owns(self) ? self.name : Pokemon.undiscoveredName
 		let color = try user.owns(self) ? self.colorNumber : Pokemon.undiscoveredColor
+		return try pokemonJson(number: number, name: name, color: color)
+	}
+
+	public func makeOpenJSON() throws -> JSON {
+		return try pokemonJson(number: number, name: name, color: colorNumber)
+	}
+
+	private func pokemonJson(number: Int, name: String, color: Int) throws -> JSON {
 		var json = JSON()
 		try json.set(Pokemon.Keys.number, number)
 		try json.set(Pokemon.Keys.name, name)

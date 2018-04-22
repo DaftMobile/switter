@@ -139,3 +139,39 @@ Example valid response (`/api/pokemon/1/catch`):
   "color": 8570017
 }
 ```
+
+### Pokemon PEEK by Number
+
+- `GET /api/pokemon/:number/peek`
+
+_Required authentication: NONE_
+
+Example valid response (`/api/pokemon/1/peek`):
+**200**
+```json
+{
+  "name": "Bulbasaur",
+  "number": 1,
+  "color": 8570017
+}
+```
+
+Pokemon not found: **404**
+
+### Pokemon PEEK by Name
+
+- `GET /api/pokemon/:name/peek`
+
+_Required authentication: NONE_
+
+Example valid response (`/api/pokemon/bulbasaur`):
+**200**
+```json
+{
+  "name": "Bulbasaur",
+  "number": 1,
+  "color": 8570017
+}
+```
+
+Pokemon not found: **404**

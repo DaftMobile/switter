@@ -23,6 +23,10 @@ final class PokemonController {
 		return try request.parameters.next(Pokemon.self).makeJSON(for: user)
 	}
 
+	func openInfo(request: Request) throws -> ResponseRepresentable {
+		return try request.parameters.next(Pokemon.self).makeOpenJSON()
+	}
+
 	func catchPokemon(request: Request) throws -> ResponseRepresentable {
 		guard let user = try request.user() else { throw Abort.unauthorized }
 		let pokemon = try request.parameters.next(Pokemon.self)

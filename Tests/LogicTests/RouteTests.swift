@@ -261,6 +261,26 @@ class RouteTests: TestCase {
 					&& json.array?.last?["number"]?.int == 4
 			})
 	}
+
+	func testUnauthorizedUserCanPeekPokemonByName() throws {
+		try seedSamplePokemon()
+		try drop
+			.testResponse(to: .get, at: "api/pokemon/charmander/peek", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: "Charmander")
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: 15313528)
+	}
+
+	func testUnauthorizedUserCanPeekPokemonByNumber() throws {
+		try seedSamplePokemon()
+		try drop
+			.testResponse(to: .get, at: "api/pokemon/4/peek", headers: validHeaders)
+			.assertStatus(is: .ok)
+			.assertJSON("name", equals: "Charmander")
+			.assertJSON("number", equals: 4)
+			.assertJSON("color", equals: 15313528)
+	}
 }
 
 // MARK: Manifest

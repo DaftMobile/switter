@@ -56,5 +56,6 @@ final class ApiRoutes: RouteCollection {
 
 		//Register routes here
 		openRoute.get("hello", handler: helloController.hello)
+		openRoute.get("pokemon", Pokemon.parameter, "peek", handler: pokemonController.openInfo)
 	}
 }
