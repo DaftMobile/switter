@@ -1,0 +1,24 @@
+before_script:
+  - git submodule update --init --recursive
+
+stages:
+  - build
+  - test
+
+cache:
+  paths:
+    - .build
+
+build:
+  stage: build
+  script:
+    - swift build -c debug
+  tags:
+    - swift
+
+test:
+  stage: test
+  script:
+    - swift test
+  tags:
+    - swift
