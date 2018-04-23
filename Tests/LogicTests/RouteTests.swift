@@ -95,7 +95,7 @@ class RouteTests: TestCase {
 
 	private func image(from: Droplet, index: Int, thumb: Bool, discovered: Bool) throws -> Bytes {
 		let path = drop.config.resourcesDir.appending("Images/Pokemons/\(discovered ? "Color" : "Grey")/\(thumb ? "Small" : "Big")/\(index)\(thumb ? "_small": "").png")
-		return try DataFile().read(at: path)
+		return try FileSourceFake().read(at: path)
 	}
 
 	private func seedAndDiscover() throws {

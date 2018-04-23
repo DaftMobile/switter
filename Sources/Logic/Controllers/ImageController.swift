@@ -6,11 +6,15 @@ import FluentProvider
 final class ImageController: ConfigInitializable {
 
 	private var images: [String: Bytes] = [:]
-	private let loader = DataFile()
+	private let loader: FileProtocol
 	private let resourcesDir: String
 
 	init(config: Config) throws {
 		resourcesDir = config.resourcesDir
+		switch config.environment {
+		case .test: loader = FileSourceFake()
+		default: loader = DataFile()
+		}
 	}
 
 	private func id(for pokemon: Pokemon, thumbnail: Bool, grey: Bool) -> String {
