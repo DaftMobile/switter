@@ -286,15 +286,26 @@ class RouteTests: TestCase {
 // MARK: Manifest
 
 extension RouteTests {
-    static let allTests = [
-        ("testHello", testHello),
-        ("testNoJokesgives500", testNoJokesgives500),
+	static let allTests = [
+		("testHello", testHello),
+		("testNoJokesgives500", testNoJokesgives500),
 		("testValidJoke", testValidJoke),
+		("testApiAddsDeviceAndUserToTheDatabase", testApiAddsDeviceAndUserToTheDatabase),
+		("testPokemonAllGet", testPokemonAllGet),
+		("testPokemonAllGetWhenOnlyBulbasaurIsCaught", testPokemonAllGetWhenOnlyBulbasaurIsCaught),
 		("testSinglePokemonValidRoute", testSinglePokemonValidRoute),
+		("testSinglePokemonValidRouteWithoutDiscovery", testSinglePokemonValidRouteWithoutDiscovery),
+		("testThumbnailWithDiscovery", testThumbnailWithDiscovery),
+		("testThumbnailWithoutDiscovery", testThumbnailWithoutDiscovery),
+		("testFullImageWithDiscovery", testFullImageWithDiscovery),
+		("testFullImageWithoutDiscovery", testFullImageWithoutDiscovery),
 		("testSinglePokemonInvalidRoute", testSinglePokemonInvalidRoute),
 		("testSinglePokemonValidRouteByName", testSinglePokemonValidRouteByName),
 		("testSinglePokemonValidRouteByNameLowercased", testSinglePokemonValidRouteByNameLowercased),
 		("testSinglePokemonInvalidRouteByName", testSinglePokemonInvalidRouteByName),
-		("testSinglePokemonInvalidRouteByNameIncomplete", testSinglePokemonInvalidRouteByNameIncomplete)
-    ]
+		("testSinglePokemonInvalidRouteByNameIncomplete", testSinglePokemonInvalidRouteByNameIncomplete),
+		("testAllPokemonEndpointWhenPokemonAreNotDiscoveredByThisDevice", testAllPokemonEndpointWhenPokemonAreNotDiscoveredByThisDevice),
+		("testUnauthorizedUserCanPeekPokemonByName", testUnauthorizedUserCanPeekPokemonByName),
+		("testUnauthorizedUserCanPeekPokemonByNumber", testUnauthorizedUserCanPeekPokemonByNumber)
+	]
 }
