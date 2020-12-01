@@ -6,7 +6,7 @@
 
 # Switter API
 
-**URL = https://switter.int.daftcode.pl/**
+**URL = https://switter.app.daftmobile.com/**
 
 ## Authorization
 
